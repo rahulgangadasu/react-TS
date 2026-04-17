@@ -1,8 +1,8 @@
-import ListGroup from "./Components/ListGroup";
+import Message from "./Message.tsx";
 function App() {
   return (
     <div>
-      <ListGroup />
+      <Message />
     </div>
   );
 }
