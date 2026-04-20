@@ -1,5 +1,4 @@
 import { useState } from "react";
-<<<<<<< HEAD
 import "./ListGroup.css";
 import styled from "styled-components";
 
@@ -14,11 +13,8 @@ interface ListItemProps {
 
 const ListItem = styled.li<ListItemProps>`
   padding: 5px 0;
-  background: ${(props) => (props.active ? "yellowgreen" : "lightgray")};
+  background: ${(props) => (props.active ? "blue" : "lightgray")};
 `;
-=======
-import listGroupStyles from "./ListGroup.module.css";
->>>>>>> f3fb6e7280a32e7e3683d8ba659ad9a8e3292ee2
 
 interface ListGroupProps {
   items: string[];
@@ -32,15 +28,7 @@ function ListGroup({ items, heading, onSelectItem }: ListGroupProps) {
     <>
       <h1>{heading}</h1>
       {items.length === 0 && <p>No items to display</p>}
-<<<<<<< HEAD
       <List>
-=======
-      <ul
-        className={[listGroupStyles.listGroup, listGroupStyles.container].join(
-          " ",
-        )}
-      >
->>>>>>> f3fb6e7280a32e7e3683d8ba659ad9a8e3292ee2
         {items.map((item, index) => (
           <ListItem
             active={index === selectedIndex}
