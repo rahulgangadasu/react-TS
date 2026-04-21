@@ -1,29 +1,28 @@
 import { useState } from "react";
-import Alert from "./Components/Alert";
-import Button from "./Components/Button";
-import ListGroup from "./Components/ListGroup";
-import Like from "./Components/Like";
-//import "./Components/ListGroup/ListGroup.css";
-import "./App.css";
-import { IoCalendarNumberSharp } from "react-icons/io5";
+import { produce } from "immer";
+
 function App() {
-  const [alertVisible, setAlertVisiblity] = useState(false);
-  let items = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"];
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "Bug 1", fixed: false },
+    { id: 2, title: "Bug 2", fixed: false },
+  ]);
+  const handleClick = () => {
+    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      }),
+    );
+  };
   return (
     <div>
-      <ListGroup
-        items={items}
-        heading="Cities"
-        onSelectItem={(item) => console.log(item)}
-      />
-      {alertVisible && (
-        <Alert onClose={() => setAlertVisiblity(false)}>Thanks! Close!!!</Alert>
-      )}
-      <Button color="dark" onClick={() => setAlertVisiblity(true)}>
-        Let's Go
-      </Button>
-      <IoCalendarNumberSharp size="30" />
-      <Like onClick={() => console.log("Like toggled")} />
+      {bugs.map((bug) => (
+        <p key={bug.id}>
+          {bug.title} - {bug.fixed ? "Fixed" : "New"}
+        </p>
+      ))}
+      <button onClick={handleClick}> Fix Me</button>
     </div>
   );
 }
