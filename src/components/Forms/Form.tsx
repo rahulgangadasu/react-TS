@@ -1,0 +1,23 @@
+const Form = () => {
+  const formAction = () => console.log("submitted");
+
+  return (
+    <form action={formAction}>
+      <div className="mb-3">
+        <label htmlFor="name" className="form-label">
+          Name
+        </label>
+        <input id="name" name="name" type="text" className="form-control" />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="age" className="form-label">
+          Age
+        </label>
+        <input id="age" name="age" type="number" className="form-control" />
+      </div>
+      <button className="btn btn-primary">Submit</button>
+    </form>
+  );
+};
+
+export default Form;
