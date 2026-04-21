@@ -44,6 +44,8 @@ const handleCartClick = () => {
   });
 };
 
+console.log(handleGameClick, handlePizzaClick, handleCartClick);
+
 const StateUpdate = () => {
   return <div>StateUpdate</div>;
 };
