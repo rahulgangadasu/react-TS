@@ -1,9 +1,9 @@
 //Building and Styling Components Practice
 import { useState } from "react";
-import Alert from "./Components/Alert";
-import Button from "./Components/Button";
-import ListGroup from "./Components/ListGroup";
-import Like from "./Components/Like";
+import Alert from "../Button/Alert";
+import Button from "../Button";
+import ListGroup from "../ListGroup";
+import Like from "../Button/Like";
 //import "./Components/ListGroup/ListGroup.css";
 import "./App.css";
 import { IoCalendarNumberSharp } from "react-icons/io5";
