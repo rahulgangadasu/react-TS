@@ -1,33 +1,46 @@
-import { useEffect, useRef, useState } from "react";
-import ProductList from "./Components/ProductList";
+import axios, { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 
+interface User {
+  id: number;
+  name: string;
+}
 function App() {
-  const [category, setCategory] = useState("");
-  const ref = useRef<HTMLInputElement>(null);
+  const [users, setUsers] = useState<User[]>([]);
+
+  const [error, setError] = useState("");
+
   useEffect(() => {
-    if (ref.current) ref.current.focus();
-  });
+    //async and await to work on promises.
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get<User[]>(
+          "https://jsonplaceholder.typicode.com/users",
+        );
+        setUsers(response.data);
+      } catch (error) {
+        setError((error as AxiosError).message);
+      }
+    };
+    fetchUsers();
+  }, []);
   return (
-    <div>
-      <div className="mb-3">
-        <ProductList category={category} />
-        <select
-          className="form-select"
-          onChange={(event) => setCategory(event.target.value)}
-        >
-          <option value=""></option>
-          <option value="Clothing">Clothing</option>
-          <option value="Accessories">Accessories</option>
-          <option value="Electronics">Electronics</option>
-        </select>
-      </div>
-      <div className="mb-6">
-        <label htmlFor="item" className="form-label">
-          Item
-        </label>
-        <input ref={ref} id="item" type="text" className="form-control" />
-      </div>
-    </div>
+    <>
+      {error && <p className="text-danger">{error}</p>}
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 export default App;
+
+/* Working with .then() and .catch() with promises.
+//get() returns a promise which holds all the data till the fetch is completed.
+//After promise resolved we will get a response object.
+axios.get<User[]>("https://jsonplaceholder.typicode.com/users")
+     .then((response) => setUsers(response.data))
+     .catch((error) => console.log(setError(error.message)));
+*/
