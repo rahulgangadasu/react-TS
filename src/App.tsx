@@ -1,5 +1,6 @@
-import axios, { AxiosError } from "axios";
+import axios, { CanceledError } from "axios";
 import { useEffect, useState } from "react";
+import { is } from "zod/locales";
 
 interface User {
   id: number;
@@ -10,23 +11,32 @@ function App() {
 
   const [error, setError] = useState("");
 
+  const [isLoading, setLoading] = useState(false);
+
+  const controller = new AbortController();
+
   useEffect(() => {
-    //async and await to work on promises.
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get<User[]>(
-          "https://jsonplaceholder.typicode.com/users",
-        );
+    setLoading(true);
+    axios
+      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+        signal: controller.signal,
+      })
+      .then((response) => {
         setUsers(response.data);
-      } catch (error) {
-        setError((error as AxiosError).message);
-      }
-    };
-    fetchUsers();
+        setLoading(false);
+      })
+      .catch((error) => {
+        if (error instanceof CanceledError) return;
+        setError(error.message);
+        setLoading(false);
+      });
+
+    //return () => controller.abort();
   }, []);
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
+      {isLoading && <div className="spinner-border"></div>}
       <ul>
         {users.map((user) => (
           <li key={user.id}>{user.name}</li>
@@ -43,4 +53,17 @@ export default App;
 axios.get<User[]>("https://jsonplaceholder.typicode.com/users")
      .then((response) => setUsers(response.data))
      .catch((error) => console.log(setError(error.message)));
+
+ //async and await to work on promises.
+const fetchUsers = async () => {
+  try {
+const response = await axios.get<User[]>(
+  "https://jsonplaceholder.typicode.com/users",
+);
+setUsers(response.data);
+  } catch (error) {
+setError((error as AxiosError).message);
+  }
+};
+    fetchUsers();
 */
