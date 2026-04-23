@@ -1,42 +1,32 @@
-import { useState } from "react";
-import ExpenseList from "./ExpenseTracker/Components/ExpenseList";
-import ExpenseFilter from "./ExpenseTracker/Components/ExpenseFilter";
-import ExpenseForm from "./ExpenseTracker/Components/ExpenseForm";
+import { useEffect, useRef, useState } from "react";
+import ProductList from "./Components/ProductList";
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "Milk", amount: 5, category: "Dairy" },
-    { id: 2, description: "Curd", amount: 8, category: "Dairy" },
-    { id: 3, description: "Tomatoes", amount: 6, category: "Vegetables" },
-    { id: 4, description: "Onions", amount: 3, category: "Vegetables" },
-  ]);
-
-  const visibleExpenses = selectedCategory
-    ? expenses.filter((expense) => expense.category === selectedCategory)
-    : expenses;
-
+  const [category, setCategory] = useState("");
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (ref.current) ref.current.focus();
+  });
   return (
     <div>
       <div className="mb-3">
-        <ExpenseForm
-          onSubmit={(expense) =>
-            setExpenses([...expenses, { ...expense, id: expenses.length + 1 }])
-          }
-        />
+        <ProductList category={category} />
+        <select
+          className="form-select"
+          onChange={(event) => setCategory(event.target.value)}
+        >
+          <option value=""></option>
+          <option value="Clothing">Clothing</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Electronics">Electronics</option>
+        </select>
       </div>
-      <div className="mb-3">
-        <ExpenseFilter
-          onSelectCategory={(category) => setSelectedCategory(category)}
-        />
+      <div className="mb-6">
+        <label htmlFor="item" className="form-label">
+          Item
+        </label>
+        <input ref={ref} id="item" type="text" className="form-control" />
       </div>
-      <ExpenseList
-        expenses={visibleExpenses}
-        onDelete={(id) =>
-          setExpenses(expenses.filter((expense) => expense.id !== id))
-        }
-      />
     </div>
   );
 }
